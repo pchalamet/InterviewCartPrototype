@@ -46,7 +46,7 @@ namespace silo
                     options.ServiceId = "CartWebApi";
                 })
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(cart.grain.CartGrain).Assembly).WithReferences())
-                .ConfigureServices(svc => svc.AddTransient<ICartService, CartService>())
+                .ConfigureServices(svc => svc.AddSingleton<ICartService, CartService>())
                 .ConfigureLogging(logging => logging.AddConsole());
 
             var host = builder.Build();
