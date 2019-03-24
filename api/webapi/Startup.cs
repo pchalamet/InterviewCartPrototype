@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Orleans;
+using Orleans.Configuration;
 
 namespace webapi
 {
@@ -24,6 +21,18 @@ namespace webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // connect to orleans cluster
+            var client = new ClientBuilder()
+                            .UseLocalhostClustering()
+                            .Configure<ClusterOptions>(options => {
+                                options.ClusterId = "dev";
+                                options.ServiceId = "CartService";
+                            })
+                            .ConfigureLogging(logging => logging.AddConsole())
+                            .Build();
+            client.Connect().Wait();
+            services.AddSingleton(client);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

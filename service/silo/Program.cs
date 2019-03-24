@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using cart.grain;
 
 namespace silo
 {
@@ -40,9 +43,10 @@ namespace silo
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = "dev";
-                    options.ServiceId = "OrleansBasics";
+                    options.ServiceId = "CartWebApi";
                 })
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(cart.grain.CartGrain).Assembly).WithReferences())
+                .ConfigureServices(svc => svc.AddTransient<ICartService, CartService>())
                 .ConfigureLogging(logging => logging.AddConsole());
 
             var host = builder.Build();

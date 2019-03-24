@@ -7,15 +7,12 @@ namespace cart.grain
 {
     public class CartItems
     {
-        public CartItems(IReadOnlyDictionary<int, int> items)
-        {
-            Items = items;
-        }
+        public Dictionary<int, int> Items;
 
-        public IReadOnlyDictionary<int, int> Items { get; private set; }
+        public static CartItems Empty = new CartItems { Items = new Dictionary<int, int>() };
     }
 
-    public interface ICart : IGrainWithGuidKey
+    public interface ICart : IGrainWithIntegerKey
     {
         Task<CartItems> Add(CartItems items);
         Task<CartItems> Remove(CartItems items);

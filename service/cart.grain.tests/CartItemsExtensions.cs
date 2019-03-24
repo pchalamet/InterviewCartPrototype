@@ -18,7 +18,7 @@ namespace cart.grain.tests
         [Test]
         public void Null_as_Cartitems_collection_is_invalid()
         {
-            var cartItems = new CartItems(null);
+            var cartItems = new CartItems { Items = null };
             Assert.Catch<ArgumentNullException>(cartItems.Validate);
         }
 
@@ -26,7 +26,7 @@ namespace cart.grain.tests
         public void Zero_id_is_invalid()
         {
             var items = new Dictionary<int, int> { { 10, 5 }, { 0, 10 }, { 3, 4 } };
-            var cartItems = new CartItems(items);
+            var cartItems = new CartItems { Items = items };
             Assert.Catch<ArgumentException>(cartItems.Validate);
         }
 
@@ -34,7 +34,7 @@ namespace cart.grain.tests
         public void Negative_id_is_invalid()
         {
             var items = new Dictionary<int, int> { { 10, 5 }, { -5, 10 }, { 3, 4 } };
-            var cartItems = new CartItems(items);
+            var cartItems = new CartItems { Items = items };
             Assert.Catch<ArgumentException>(cartItems.Validate);
         }
 
@@ -42,7 +42,7 @@ namespace cart.grain.tests
         public void Zero_quantity_is_invalid()
         {
             var items = new Dictionary<int, int> { { 10, 5 }, { 4, 0 }, { 3, 4 } };
-            var cartItems = new CartItems(items);
+            var cartItems = new CartItems { Items = items };
             Assert.Catch<ArgumentException>(cartItems.Validate);
         }
 
@@ -50,7 +50,7 @@ namespace cart.grain.tests
         public void Negative_quantity_is_invalid()
         {
             var items = new Dictionary<int, int> { { 10, 5 }, { 4, -1 }, { 3, 4 } };
-            var cartItems = new CartItems(items);
+            var cartItems = new CartItems { Items = items };
             Assert.Catch<ArgumentException>(cartItems.Validate);
         }
 
@@ -58,7 +58,7 @@ namespace cart.grain.tests
         public void Wellformed_CartItems_pass()
         {
             var items = new Dictionary<int, int> { { 10, 5 }, { 4, 3 }, { 3, 4 } };
-            var cartItems = new CartItems(items);
+            var cartItems = new CartItems { Items = items };
             cartItems.Validate();
         }
     }

@@ -8,7 +8,7 @@ namespace cart.grain.tests
         public static CartItems Build(params (int, int)[] list)
         {
             var items = list.ToDictionary(x => x.Item1, x => x.Item2);
-            return new CartItems(items);
+            return new CartItems { Items = items };
         }
     }
 }
