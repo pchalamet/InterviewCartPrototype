@@ -23,6 +23,12 @@ namespace webapi.Controllers
             _clusterClient = clusterClient;
         }
 
+        /// <summary>
+        /// Add the specified items into the cart.
+        /// </summary>
+        /// <returns>Cart after items addition</returns>
+        /// <param name="id">Cart identifier.</param>
+        /// <param name="items">Items to add.</param>
         [HttpPost]
         public async Task<CartItems> Add(long id, [FromBody] CartItems items)
         {
@@ -35,6 +41,12 @@ namespace webapi.Controllers
             return newCart;
         }
 
+        /// <summary>
+        /// Remove the specified items from cart.
+        /// </summary>
+        /// <returns>Cart after items removal</returns>
+        /// <param name="id">Cart identifier.</param>
+        /// <param name="items">Items to remove</param>
         [HttpPost]
         public async Task<CartItems> Remove(long id, [FromBody] CartItems items)
         {
@@ -47,6 +59,11 @@ namespace webapi.Controllers
             return newCart;
         }
 
+        /// <summary>
+        /// Clear the specified cart.
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="id">Cart identifier.</param>
         [HttpDelete]
         public async Task Clear(long id)
         {

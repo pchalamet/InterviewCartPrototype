@@ -2,6 +2,13 @@
 using NUnit.Framework;
 using System.Threading.Tasks;
 using Orleans.TestingHost;
+using Orleans;
+using Orleans.Configuration;
+using Orleans.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace cart.grain.tests
 {
@@ -10,15 +17,29 @@ namespace cart.grain.tests
     {
         private readonly TestCluster _cluster;
 
+
+        private class ClusterConfigurator : ISiloBuilderConfigurator
+        {
+            public void Configure(ISiloHostBuilder hostBuilder)
+            {
+                hostBuilder.ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(cart.grain.CartGrain).Assembly).WithReferences())
+                           .ConfigureServices(svc => svc.AddTransient<ICartService, CartService>());
+            }
+        }
+
+
         public CartGrainTest()
         {
-            //var _cluster = new TestCluster();
-            //_cluster.Deploy();
+            var options = new TestClusterOptions();
+            options.SiloBuilderConfiguratorTypes.Add(typeof(ClusterConfigurator).FullName);
+
+            _cluster = new TestCluster(options, new List<IConfigurationSource>());
+            _cluster.Deploy();
         }
 
         public void Dispose()
         {
-            //_cluster.StopAllSilos();
+            _cluster.StopAllSilos();
         }
 
 
