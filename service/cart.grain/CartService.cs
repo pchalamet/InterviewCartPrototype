@@ -19,7 +19,6 @@ namespace cart.grain
     }
 
 
-
     // WARNING: this class is not threadsafe - owner is responsible of correctly synchronizing access
     public class CartService : ICartService
     {
