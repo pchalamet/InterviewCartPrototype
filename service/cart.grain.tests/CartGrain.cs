@@ -22,7 +22,8 @@ namespace cart.grain.tests
         {
             public void Configure(ISiloHostBuilder hostBuilder)
             {
-                hostBuilder.ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(cart.grain.CartGrain).Assembly).WithReferences())
+                hostBuilder.AddMemoryGrainStorage("Default")
+                           .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(cart.grain.CartGrain).Assembly).WithReferences())
                            .ConfigureServices(svc => svc.AddTransient<ICartService, CartService>());
             }
         }
@@ -53,7 +54,8 @@ namespace cart.grain.tests
             var add3 = Helpers.Build((2, 3), (1, 5));
             var expected3 = Helpers.Build((2, 3), (1, 5));
 
-            var grain = _cluster.GrainFactory.GetGrain<ICart>(42);
+            var factory = _cluster.GrainFactory;
+            var grain = factory.GetGrain<ICart>(42);
 
             var content1 = await grain.Add(add1);
             Assert.AreEqual(10, content1.Items[1]);

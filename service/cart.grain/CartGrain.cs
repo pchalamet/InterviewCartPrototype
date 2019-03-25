@@ -5,6 +5,7 @@ using Orleans.Providers;
 
 namespace cart.grain
 {
+    [StorageProvider]
     public class CartGrain : Grain<CartItems>, ICart
     {
         private ICartService _cartService;
@@ -12,25 +13,26 @@ namespace cart.grain
         public CartGrain(ICartService cartService)
         {
             _cartService = cartService;
-            base.State = CartItems.Empty;
         }
 
-        public Task<CartItems> Add(CartItems items)
+        public async Task<CartItems> Add(CartItems items)
         {
             base.State = _cartService.Add(base.State, items);
-            return Task.FromResult(base.State);
+            await base.WriteStateAsync();
+            return base.State;
         }
 
-        public Task<CartItems> Remove(CartItems items)
+        public async Task<CartItems> Remove(CartItems items)
         {
             base.State = _cartService.Remove(base.State, items);
-            return Task.FromResult(base.State);
+            await base.WriteStateAsync();
+            return base.State;
         }
 
-        public Task Clear()
+        public async Task Clear()
         {
             base.State = CartItems.Empty;
-            return Task.CompletedTask;
+            await base.WriteStateAsync();
         }
     }
 }

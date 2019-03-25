@@ -45,6 +45,7 @@ namespace silo
                     options.ClusterId = "dev";
                     options.ServiceId = "CartWebApi";
                 })
+                .AddMemoryGrainStorage("Default")
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(cart.grain.CartGrain).Assembly).WithReferences())
                 .ConfigureServices(svc => svc.AddSingleton<ICartService, CartService>())
                 .ConfigureLogging(logging => logging.AddConsole());
