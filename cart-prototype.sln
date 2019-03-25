@@ -24,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4C375AA8-1606-457D-B14B-BE28ABAC8AD9}"
 	ProjectSection(SolutionItems) = preProject
 		silo.dockerfile = silo.dockerfile
+		webapi.dockerfile = webapi.dockerfile
 	EndProjectSection
 EndProject
 Global
