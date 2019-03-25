@@ -19,7 +19,7 @@ namespace cart.grain.tests
         }
 
         [Test]
-        public void Add_new_id()
+        public void Add_new_id_can_be_observed()
         {
             var svc = new CartService();
             var content = svc.Add(CartItems.Empty, Helpers.Build((1, 5)));
@@ -29,7 +29,7 @@ namespace cart.grain.tests
         }
 
         [Test]
-        public void Add_items()
+        public void Add_several_ids_can_be_observed()
         {
             var svc = new CartService();
 
@@ -77,6 +77,29 @@ namespace cart.grain.tests
 
             Assert.AreEqual(5, content2.Items[1]);
             Assert.AreEqual(1, content2.Items.Count);
+        }
+
+        [Test]
+        public void Quantity_does_not_overflow()
+        {
+            var svc = new CartService();
+
+            var content1 = svc.Add(CartItems.Empty, Helpers.Build((1, 5)));
+            var content2 = svc.Add(content1, Helpers.Build((1, int.MaxValue)));
+
+            Assert.AreEqual(int.MaxValue, content2.Items[1]);
+            Assert.AreEqual(1, content2.Items.Count);
+        }
+
+        [Test]
+        public void Quantity_does_not_underflow()
+        {
+            var svc = new CartService();
+
+            var content1 = svc.Add(CartItems.Empty, Helpers.Build((1, 1)));
+            var content2 = svc.Remove(content1, Helpers.Build((1, int.MaxValue)));
+
+            Assert.AreEqual(0, content2.Items.Count);
         }
     }
 }
