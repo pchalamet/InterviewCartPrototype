@@ -57,16 +57,25 @@ namespace cart.grain.tests
             var factory = _cluster.GrainFactory;
             var grain = factory.GetGrain<ICart>(42);
 
+            // expected cart:
+            // - article1: 10
             var content1 = await grain.Add(add1);
             Assert.AreEqual(10, content1.Items[1]);
             Assert.AreEqual(1, content1.Items.Count);
 
+            // expected cart:
+            // - article1: 8
             var content2 = await grain.Remove(remove2);
             Assert.AreEqual(8, content2.Items[1]);
             Assert.AreEqual(1, content2.Items.Count);
 
+            // expected cart:
+            // - empty
             await grain.Clear();
 
+            // expected cart:
+            // - article1: 5
+            // - article2: 3
             var content3 = await grain.Add(add3);
             Assert.AreEqual(5, content3.Items[1]);
             Assert.AreEqual(3, content3.Items[2]);

@@ -15,6 +15,9 @@ namespace cart.grain
 
     public class CartService : ICartService
     {
+        // apply operation on cart with provided items
+        // rules are as follow:
+        // - 
         private CartItems Update(CartItems items, CartItems opItems, Func<int, int, int> op)
         {
             items.Validate();
@@ -23,20 +26,16 @@ namespace cart.grain
             var newItems = new CartItems { Items = new Dictionary<int, int>(items.Items) };
             foreach (var item in opItems.Items)
             {
-                if (newItems.Items.TryGetValue(item.Key, out var qty))
+                newItems.Items.TryGetValue(item.Key, out var qty);
+                qty = op(qty, item.Value);
+                if (qty <= 0)
                 {
-                    qty = op(qty, item.Value);
-                    if (qty <= 0)
-                    {
-                        newItems.Items.Remove(item.Key);
-                    }
-                    else
-                    {
-                        newItems.Items[item.Key] = qty;
-                    }
+                    newItems.Items.Remove(item.Key);
                 }
                 else
-                    newItems.Items.Add(item.Key, item.Value);
+                {
+                    newItems.Items[item.Key] = qty;
+                }
             }
 
             return newItems;
