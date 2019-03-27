@@ -31,10 +31,9 @@ namespace cart.grain.tests
 
         public CartGrainTest()
         {
-            var options = new TestClusterOptions();
-            options.SiloBuilderConfiguratorTypes.Add(typeof(ClusterConfigurator).FullName);
-
-            _cluster = new TestCluster(options, new List<IConfigurationSource>());
+            var builder = new TestClusterBuilder();
+            builder.AddSiloBuilderConfigurator<ClusterConfigurator>();
+            _cluster = builder.Build();
             _cluster.Deploy();
         }
 
@@ -47,26 +46,25 @@ namespace cart.grain.tests
         [Test]
         public async Task Grain_workflow()
         {
-            var add1 = Helpers.Build((1, 10));
-            var expected1 = Helpers.Build((1, 10));
-            var remove2 = Helpers.Build((1, 2));
-            var expected2 = Helpers.Build((1, 8));
-            var add3 = Helpers.Build((2, 3), (1, 5));
-            var expected3 = Helpers.Build((2, 3), (1, 5));
+            var add1 = Helpers.Build(("A1", 10));
+            var expected1 = Helpers.Build(("A1", 10));
+            var remove2 = Helpers.Build(("A1", 2));
+            var expected2 = Helpers.Build(("A1", 8));
+            var add3 = Helpers.Build(("A2", 3), ("A1", 5));
+            var expected3 = Helpers.Build(("A2", 3), ("A1", 5));
 
-            var factory = _cluster.GrainFactory;
-            var grain = factory.GetGrain<ICart>(42);
+            var grain = _cluster.GrainFactory.GetGrain<ICart>(42);
 
             // expected cart:
             // - article1: 10
             var content1 = await grain.Add(add1);
-            Assert.AreEqual(10, content1.Items[1]);
+            Assert.AreEqual(10, content1.Items["A1"]);
             Assert.AreEqual(1, content1.Items.Count);
 
             // expected cart:
             // - article1: 8
             var content2 = await grain.Remove(remove2);
-            Assert.AreEqual(8, content2.Items[1]);
+            Assert.AreEqual(8, content2.Items["A1"]);
             Assert.AreEqual(1, content2.Items.Count);
 
             // expected cart:
@@ -77,8 +75,8 @@ namespace cart.grain.tests
             // - article1: 5
             // - article2: 3
             var content3 = await grain.Add(add3);
-            Assert.AreEqual(5, content3.Items[1]);
-            Assert.AreEqual(3, content3.Items[2]);
+            Assert.AreEqual(5, content3.Items["A1"]);
+            Assert.AreEqual(3, content3.Items["A2"]);
             Assert.AreEqual(2, content3.Items.Count);
         }
     }

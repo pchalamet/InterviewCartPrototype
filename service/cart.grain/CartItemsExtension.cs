@@ -14,7 +14,7 @@ namespace cart.grain
         {
             if (null == items) throw new ArgumentNullException(nameof(items));
             if (null == items.Items) throw new ArgumentNullException(nameof(CartItems.Items));
-            if (items.Items.Any(x => x.Key <= 0)) throw new ArgumentException("Invalid id");
+            if (items.Items.Any(x => x.Key == null)) throw new ArgumentException("Invalid id");
             if (items.Items.Any(x => x.Value <= 0)) throw new ArgumentException("Invalid quantity");
         }
     }

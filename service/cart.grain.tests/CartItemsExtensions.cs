@@ -23,25 +23,9 @@ namespace cart.grain.tests
         }
 
         [Test]
-        public void Zero_id_is_invalid()
-        {
-            var items = new Dictionary<int, int> { { 10, 5 }, { 0, 10 }, { 3, 4 } };
-            var cartItems = new CartItems { Items = items };
-            Assert.Catch<ArgumentException>(cartItems.Validate);
-        }
-
-        [Test]
-        public void Negative_id_is_invalid()
-        {
-            var items = new Dictionary<int, int> { { 10, 5 }, { -5, 10 }, { 3, 4 } };
-            var cartItems = new CartItems { Items = items };
-            Assert.Catch<ArgumentException>(cartItems.Validate);
-        }
-
-        [Test]
         public void Zero_quantity_is_invalid()
         {
-            var items = new Dictionary<int, int> { { 10, 5 }, { 4, 0 }, { 3, 4 } };
+            var items = new Dictionary<string, int> { { "A10", 5 }, { "A4", 0 }, { "A3", 4 } };
             var cartItems = new CartItems { Items = items };
             Assert.Catch<ArgumentException>(cartItems.Validate);
         }
@@ -49,7 +33,7 @@ namespace cart.grain.tests
         [Test]
         public void Negative_quantity_is_invalid()
         {
-            var items = new Dictionary<int, int> { { 10, 5 }, { 4, -1 }, { 3, 4 } };
+            var items = new Dictionary<string, int> { { "A10", 5 }, { "A4", -1 }, { "A3", 4 } };
             var cartItems = new CartItems { Items = items };
             Assert.Catch<ArgumentException>(cartItems.Validate);
         }
@@ -57,7 +41,7 @@ namespace cart.grain.tests
         [Test]
         public void Wellformed_CartItems_pass()
         {
-            var items = new Dictionary<int, int> { { 10, 5 }, { 4, 3 }, { 3, 4 } };
+            var items = new Dictionary<string, int> { { "A10", 5 }, { "A4", 3 }, { "A3", 4 } };
             var cartItems = new CartItems { Items = items };
             cartItems.Validate();
         }

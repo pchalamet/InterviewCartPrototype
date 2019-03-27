@@ -32,7 +32,7 @@ namespace cart.grain
         public async Task Clear()
         {
             base.State = CartItems.Empty;
-            await base.WriteStateAsync();
+            await base.ClearStateAsync();
         }
     }
 }

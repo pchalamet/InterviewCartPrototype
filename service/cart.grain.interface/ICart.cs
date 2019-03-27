@@ -5,11 +5,12 @@ using System.Collections.Generic;
 
 namespace cart.grain
 {
+    [Serializable]
     public class CartItems
     {
-        public Dictionary<int, int> Items;
+        public Dictionary<string, int> Items = new Dictionary<string, int>();
 
-        public static CartItems Empty = new CartItems { Items = new Dictionary<int, int>() };
+        public static CartItems Empty = new CartItems();
     }
 
     public interface ICart : IGrainWithIntegerKey

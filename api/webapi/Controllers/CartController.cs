@@ -17,7 +17,7 @@ namespace webapi.Controllers
         /// - Key is identifier of the article
         /// - Value is quantity of the article
         /// </summary>
-        public Dictionary<int, int> Items;
+        public Dictionary<string, int> Items;
     }
 
     [Route("api/[controller]/[action]/{id}")]

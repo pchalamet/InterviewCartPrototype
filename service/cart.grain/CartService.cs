@@ -26,7 +26,7 @@ namespace cart.grain
             items.Validate();
             opItems.Validate();
 
-            var newItems = new CartItems { Items = new Dictionary<int, int>(items.Items) };
+            var newItems = new CartItems { Items = new Dictionary<string, int>(items.Items) };
             foreach (var item in opItems.Items)
             {
                 newItems.Items.TryGetValue(item.Key, out var qty);
