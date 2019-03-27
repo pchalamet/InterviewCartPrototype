@@ -7,8 +7,16 @@ using Orleans;
 
 namespace webapi.Controllers
 {
+    /// <summary>
+    /// Describe the cart to be added or the cart itself
+    /// </summary>
     public class CartItems
     {
+        /// <summary>
+        /// Describe an item in the cart:
+        /// - Key is identifier of the article
+        /// - Value is quantity of the article
+        /// </summary>
         public Dictionary<int, int> Items;
     }
 

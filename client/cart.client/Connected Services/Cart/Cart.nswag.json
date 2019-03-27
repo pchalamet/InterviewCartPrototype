@@ -1,0 +1,131 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "Cart API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Cart/Add/{id}": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "operationId": "Add",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int64"
+          },
+          {
+            "name": "items",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CartItems"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CartItems"
+            }
+          }
+        }
+      }
+    },
+    "/api/Cart/Remove/{id}": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "operationId": "Remove",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int64"
+          },
+          {
+            "name": "items",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CartItems"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CartItems"
+            }
+          }
+        }
+      }
+    },
+    "/api/Cart/Clear/{id}": {
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "operationId": "Clear",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CartItems": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  }
+}

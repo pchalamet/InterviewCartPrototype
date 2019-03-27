@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>webapi</name>
+    </assembly>
+    <members>
+        <member name="M:webapi.Controllers.CartController.Add(System.Int64,webapi.Controllers.CartItems)">
+            <summary>
+            Add the specified items into the cart.
+            </summary>
+            <returns>Cart after items addition</returns>
+            <param name="id">Cart identifier.</param>
+            <param name="items">Items to add.</param>
+        </member>
+        <member name="M:webapi.Controllers.CartController.Remove(System.Int64,webapi.Controllers.CartItems)">
+            <summary>
+            Remove the specified items from cart.
+            </summary>
+            <returns>Cart after items removal</returns>
+            <param name="id">Cart identifier.</param>
+            <param name="items">Items to remove</param>
+        </member>
+        <member name="M:webapi.Controllers.CartController.Clear(System.Int64)">
+            <summary>
+            Clear the specified cart.
+            </summary>
+            <returns></returns>
+            <param name="id">Cart identifier.</param>
+        </member>
+    </members>
+</doc>
