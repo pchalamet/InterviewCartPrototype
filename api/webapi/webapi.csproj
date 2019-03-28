@@ -1,16 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>c:\src\perso\cart-prototype\api\webapi\webapi.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>c:\src\perso\cart-prototype\api\webapi\webapi.xml</DocumentationFile>
+    
+    <!-- OutDir is not correctly initialized - this is a workaround -->
+    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/webapi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

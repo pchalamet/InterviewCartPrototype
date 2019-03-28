@@ -20,6 +20,11 @@ namespace webapi.Controllers
         public Dictionary<string, int> Items;
     }
 
+    /// <summary>
+    /// This is the main interface to interact with the cart.
+    /// NOTE: There is no security for the moment and cart id should be linked to user instead of id (ie: id must be implicit)
+    ///       This is something to be reworked once main interface is stabilized.
+    /// </summary>
     [Route("api/[controller]/[action]/{id}")]
     [ApiController]
     public class CartController : ControllerBase
