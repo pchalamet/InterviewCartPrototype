@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\service\cart.grain.interface\cart.grain.interface.csproj" />
+    <ProjectReference Include="..\cart.grain.interface\cart.grain.interface.csproj" />
   </ItemGroup>
 
 </Project>

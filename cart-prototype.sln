@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.grain", "service\cart.grain\cart.grain.csproj", "{E6C72C66-D44F-4396-9604-A2903CB331D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.grain", "services\cart.grain\cart.grain.csproj", "{E6C72C66-D44F-4396-9604-A2903CB331D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.grain.interface", "service\cart.grain.interface\cart.grain.interface.csproj", "{4CE581DA-20F3-44D4-B314-20AA27B22DBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.grain.interface", "services\cart.grain.interface\cart.grain.interface.csproj", "{4CE581DA-20F3-44D4-B314-20AA27B22DBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.grain.tests", "service\cart.grain.tests\cart.grain.tests.csproj", "{582E63B0-57A9-4F8B-A663-C2B7CE10FAC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.grain.tests", "services\cart.grain.tests\cart.grain.tests.csproj", "{582E63B0-57A9-4F8B-A663-C2B7CE10FAC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "silo", "service\silo\silo.csproj", "{0B5113C6-FE27-416B-AACF-13F1E053D8A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "silo", "services\silo\silo.csproj", "{0B5113C6-FE27-416B-AACF-13F1E053D8A8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5B8557C4-C595-45BF-9E32-781D5BFECBD9}"
 EndProject
@@ -17,9 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{F92A09
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.client", "client\cart.client\cart.client.csproj", "{25EBABC3-C811-45B5-AE04-02A70C4ABCB9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apis", "apis", "{130A2B4A-D7E1-4DDD-A812-3B9C753CB25C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapi", "api\webapi\webapi.csproj", "{B4BEC2F8-0237-4F4F-BEDE-65DC6363FC07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapi", "services\webapi\webapi.csproj", "{B4BEC2F8-0237-4F4F-BEDE-65DC6363FC07}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4C375AA8-1606-457D-B14B-BE28ABAC8AD9}"
 	ProjectSection(SolutionItems) = preProject
@@ -119,7 +117,7 @@ Global
 		{582E63B0-57A9-4F8B-A663-C2B7CE10FAC0} = {5B8557C4-C595-45BF-9E32-781D5BFECBD9}
 		{0B5113C6-FE27-416B-AACF-13F1E053D8A8} = {5B8557C4-C595-45BF-9E32-781D5BFECBD9}
 		{25EBABC3-C811-45B5-AE04-02A70C4ABCB9} = {F92A09DF-0FF1-4B14-8A54-E46CB3A0E994}
-		{B4BEC2F8-0237-4F4F-BEDE-65DC6363FC07} = {130A2B4A-D7E1-4DDD-A812-3B9C753CB25C}
+		{B4BEC2F8-0237-4F4F-BEDE-65DC6363FC07} = {5B8557C4-C595-45BF-9E32-781D5BFECBD9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B626B95-B9F5-4DFB-91E8-5DAB88DEB16E}
