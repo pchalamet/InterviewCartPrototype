@@ -29,11 +29,11 @@ namespace webapi.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly IClusterClient _clusterClient;
+        private readonly IGrainFactory _grainFactory;
 
-        public CartController(IClusterClient clusterClient)
+        public CartController(IGrainFactory grainFactory)
         {
-            _clusterClient = clusterClient;
+            _grainFactory = grainFactory;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<CartItems> Add(long id, [FromBody] CartItems items)
         {
-            var grain = _clusterClient.GetGrain<ICart>(id);
+            var grain = _grainFactory.GetGrain<ICart>(id);
 
             var cartItems = new cart.grain.CartItems { Items = items.Items };
             var newSvcCart = await grain.Add(cartItems);
@@ -63,7 +63,7 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<CartItems> Remove(long id, [FromBody] CartItems items)
         {
-            var grain = _clusterClient.GetGrain<ICart>(id);
+            var grain = _grainFactory.GetGrain<ICart>(id);
 
             var cartItems = new cart.grain.CartItems { Items = items.Items };
             var newSvcCart = await grain.Remove(cartItems);
@@ -80,7 +80,7 @@ namespace webapi.Controllers
         [HttpDelete]
         public async Task Clear(long id)
         {
-            var grain = _clusterClient.GetGrain<ICart>(id);
+            var grain = _grainFactory.GetGrain<ICart>(id);
             await grain.Clear();
         }
     }

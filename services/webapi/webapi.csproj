@@ -5,7 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     
     <!-- OutDir is not correctly initialized - this is a workaround -->
-    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/webapi.xml</DocumentationFile>
+    <!--<DocumentationFile>bin/$(Configuration)/$(TargetFramework)/webapi.xml</DocumentationFile>-->
   </PropertyGroup>
 
   <ItemGroup>
