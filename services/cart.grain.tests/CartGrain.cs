@@ -35,6 +35,7 @@ namespace cart.grain.tests
             builder.AddSiloBuilderConfigurator<ClusterConfigurator>();
             _cluster = builder.Build();
             _cluster.Deploy();
+            _cluster.WaitForLivenessToStabilizeAsync().Wait();
         }
 
         public void Dispose()
