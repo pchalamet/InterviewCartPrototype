@@ -32,10 +32,23 @@ The webapi has no state - it just delegates to the service layer. This can help 
 
 The api applies an operation (add or remove) and returns the final state to the client. This has been designed this way to deal with concurrency (see below: service layer section).
 
+Operation | Verb   | Description
+----------|--------|-------------
+Add       | POST   | Add all items specified in the CartItems. Note max item quantity is `int.MaxValue`.
+Remove    | POST   | Remove all items specified in the CartItems. Items with no quantity will be removed from cart.
+Clear     | DELETE | Clear cart.
+
+
 Api http error codes are as follow:
-* 200 : everything is ok
-* 400 : something bad happened - check the reason to understand why
-* 503 : if it gets out of control
+
+Code | Meaning
+-----|--------
+200  | Everything is ok.
+400  | Something bad happened - check the reason to understand why.
+503  | System failure.
+
+
+For more information and client integration, you can check the Swagger API (see `client/Cart/Cart.nswag.json`).
 
 
 ## Service layer
@@ -47,7 +60,7 @@ Orleans does solve the state management problem - allowing to persist and above 
 Orleans also ensures serialized access to the grain instance - no concurrency - without impacting overall scalability.
 Note that data is "persisted" in memory for the moment.
 
-Api returns a tuple (status, value) - because no exception shall be raised. Tuples are used because it's convenient to decorate results such way. A better way is to use union types but C# does not support this.
+Api returns a tuple (status, value) - because no exception shall be raised. Tuples are used because it's convenient to decorate results such way but it's still better to use union types (but alas, C# does not support this).
 
 
 ## Client
@@ -64,4 +77,4 @@ Run `run.ps1` to run locally an Orleans silo, the WebApi and kick clients.
 
 # Alternative build
 Docker images are provided as well, which are used in the GCP build via cloudbuild.yaml.
-Note images are not functionnal as more configuration should be done for exposed endpoints.
+Note images are not functionnal as some configuration should be done (endpoints are localhost for the moment).
