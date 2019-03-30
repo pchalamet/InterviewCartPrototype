@@ -72,6 +72,8 @@ Some requirements in order to build everything:
 * docker
 * powershell core
 
+Main solution file is `cart-prototype.sln` - this can either be built using `dotnet` or `VS Studio`.
+
 Run `build.ps1` to build, test and create docker images.
 Run `run.ps1` to run locally an Orleans silo, the WebApi and kick clients.
 
