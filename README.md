@@ -91,6 +91,6 @@ Using `powershell`:
 * Run `build.ps1` to build, test and create docker images.
 * Run `run.ps1` to run locally an Orleans silo, the WebApi and kick clients.
 
-# Alternative build
+## Alternative build
 Docker images are provided as well, which are used in the GCP build via cloudbuild.yaml.
 Note images are not functionnal as some configuration should be done (endpoints are localhost for the moment).
