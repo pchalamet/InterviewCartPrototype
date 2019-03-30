@@ -28,9 +28,15 @@ Note this is a prototype, improvements must include:
 * link cart id to user profile
 Again, this is not provided here as it's a prototype.
 
-The webapi has no state - it just delegates to the service layer. This can help scaling the front end. Implementation is async to help processing more requests.
+The webapi has no state - it just delegates to the service layer. This can help scaling the front end. Implementation is fully async to help processing more requests.
 
-The api applies an operation (add or remove) and return the final state to the client. This has been designed this way to deal with concurrency (see below: service layer section).
+The api applies an operation (add or remove) and returns the final state to the client. This has been designed this way to deal with concurrency (see below: service layer section).
+
+Api http error codes are as follow:
+* 200 : everything is ok
+* 400 : something bad happened - check the reason to understand why
+* 503 : if it gets out of control
+
 
 ## Service layer
 The service layer is implemented using Orleans to deal with 2 problems:
@@ -39,11 +45,13 @@ The service layer is implemented using Orleans to deal with 2 problems:
 
 Orleans does solve the state management problem - allowing to persist and above all route requests to the right cart instance (a grain instance).
 Orleans also ensures serialized access to the grain instance - no concurrency - without impacting overall scalability.
+Note that data is "persisted" in memory for the moment.
 
-Note that data is persisted in memory for the moment.
+Api returns a tuple (status, value) - because no exception shall be raised. Tuples are used because it's convenient to decorate results such way. A better way is to use union types but C# does not support this.
+
 
 ## Client
-The client is a dummy one and just import the Swagger service definition. It randomly applies operation on a random cart (so one can run concurrent client to test behaviour).
+The client is a dummy one and just import the Swagger service definition. It randomly applies operation on a random cart (so one can run concurrent client to test behaviour). Client use the error info on error and display it as well.
 
 # Build
 Some requirements:
@@ -52,4 +60,4 @@ Some requirements:
 * powershell
 
 Run `build.ps1` to build, test and create docker images.
-Run `run.ps1` to run locally an Orleans silo, the WebApi and kick 2 concurrent clients.
+Run `run.ps1` to run locally an Orleans silo, the WebApi and kick clients.
