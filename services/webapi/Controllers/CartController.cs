@@ -22,6 +22,23 @@ namespace webapi.Controllers
         public Dictionary<string, int> Items;
     }
 
+
+    public enum CartErrorCode
+    {
+        InternalError = 1,
+        InvalidItemId = 2,
+        InvalidQuantity = 3,
+        BadRequest = 4,
+    }
+
+
+    public class CartError
+    {
+        public CartErrorCode ErrorCode;
+        public string Reason;
+    }
+
+
     /// <summary>
     /// This is the main interface to interact with the cart.
     /// NOTE: There is no security for the moment and cart id should be linked to user instead of id (ie: id must be implicit)
@@ -46,7 +63,7 @@ namespace webapi.Controllers
         /// <param name="items">Items to add.</param>
         [HttpPost]
         [ProducesResponseType(typeof(CartItems), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CartError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add(long id, [FromBody] CartItems items)
         {
             try
@@ -61,7 +78,7 @@ namespace webapi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return base.StatusCode(HttpStatusCode.InternalServerError);
             }
         }
 
