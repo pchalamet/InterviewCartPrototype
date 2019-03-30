@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using cart.grain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
 
@@ -43,15 +45,24 @@ namespace webapi.Controllers
         /// <param name="id">Cart identifier.</param>
         /// <param name="items">Items to add.</param>
         [HttpPost]
-        public async Task<CartItems> Add(long id, [FromBody] CartItems items)
+        [ProducesResponseType(typeof(CartItems), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Add(long id, [FromBody] CartItems items)
         {
-            var grain = _grainFactory.GetGrain<ICart>(id);
+            try
+            {
+                var grain = _grainFactory.GetGrain<ICart>(id);
 
-            var cartItems = new cart.grain.CartItems { Items = items.Items };
-            var newSvcCart = await grain.Add(cartItems);
+                var cartItems = new cart.grain.CartItems { Items = items.Items };
+                var newSvcCart = await grain.Add(cartItems);
 
-            var newCart = new CartItems() { Items = newSvcCart.Items };
-            return newCart;
+                var newCart = new CartItems() { Items = newSvcCart.Items };
+                return Ok(newCart);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -61,15 +72,24 @@ namespace webapi.Controllers
         /// <param name="id">Cart identifier.</param>
         /// <param name="items">Items to remove</param>
         [HttpPost]
-        public async Task<CartItems> Remove(long id, [FromBody] CartItems items)
+        [ProducesResponseType(typeof(CartItems), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Remove(long id, [FromBody] CartItems items)
         {
-            var grain = _grainFactory.GetGrain<ICart>(id);
+            try
+            {
+                var grain = _grainFactory.GetGrain<ICart>(id);
 
-            var cartItems = new cart.grain.CartItems { Items = items.Items };
-            var newSvcCart = await grain.Remove(cartItems);
+                var cartItems = new cart.grain.CartItems { Items = items.Items };
+                var newSvcCart = await grain.Remove(cartItems);
 
-            var newCart = new CartItems() { Items = newSvcCart.Items };
-            return newCart;
+                var newCart = new CartItems() { Items = newSvcCart.Items };
+                return Ok(newCart);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -78,10 +98,20 @@ namespace webapi.Controllers
         /// <returns></returns>
         /// <param name="id">Cart identifier.</param>
         [HttpDelete]
-        public async Task Clear(long id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Clear(long id)
         {
-            var grain = _grainFactory.GetGrain<ICart>(id);
-            await grain.Clear();
+            try
+            {
+                var grain = _grainFactory.GetGrain<ICart>(id);
+                await grain.Clear();
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -44,6 +44,12 @@
             "schema": {
               "$ref": "#/definitions/CartItems"
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           }
         }
       }
@@ -87,6 +93,12 @@
             "schema": {
               "$ref": "#/definitions/CartItems"
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           }
         }
       }
@@ -97,6 +109,11 @@
           "Cart"
         ],
         "operationId": "Clear",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
             "type": "integer",
@@ -109,6 +126,12 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           }
         }
       }
@@ -124,6 +147,30 @@
             "type": "integer",
             "format": "int32"
           }
+        }
+      }
+    },
+    "ProblemDetails": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      },
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
         }
       }
     }

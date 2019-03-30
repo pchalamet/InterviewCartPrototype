@@ -1,4 +1,5 @@
 using cart.grain;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -32,7 +33,9 @@ namespace webapi.Controllers.Tests
 
 
             var controller = new webapi.Controllers.CartController(grainFactory.Object);
-            var result = await controller.Add(cartId, queryItems);
+            var response = await controller.Add(cartId, queryItems) as OkObjectResult;
+            Assert.AreEqual(200, response.StatusCode);
+            var result = (webapi.Controllers.CartItems)response.Value;
             Assert.AreEqual(1, result.Items.Count);
             Assert.AreEqual(3, result.Items["article1"]);
 
@@ -64,7 +67,9 @@ namespace webapi.Controllers.Tests
 
 
             var controller = new webapi.Controllers.CartController(grainFactory.Object);
-            var result = await controller.Remove(cartId, queryItems);
+            var response = await controller.Remove(cartId, queryItems) as OkObjectResult;
+            Assert.AreEqual(200, response.StatusCode);
+            var result = (webapi.Controllers.CartItems)response.Value;
             Assert.AreEqual(0, result.Items.Count);
 
             repo.VerifyAll();
@@ -87,7 +92,8 @@ namespace webapi.Controllers.Tests
 
 
             var controller = new webapi.Controllers.CartController(grainFactory.Object);
-            await controller.Clear(cartId);
+            var response = await controller.Clear(cartId) as OkResult;
+            Assert.AreEqual(200, response.StatusCode);
 
             repo.VerifyAll();
         }
