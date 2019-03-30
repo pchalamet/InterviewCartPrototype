@@ -7,6 +7,10 @@ using Orleans.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using cart.grain;
+using System.Net;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace silo
 {
@@ -39,13 +43,17 @@ namespace silo
         {
             // define the cluster configuration
             var builder = new SiloHostBuilder()
-                .UseLocalhostClustering()
+                .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000, hostname: Dns.GetHostName())
                 .Configure<ClusterOptions>(options =>
                 {
-                    options.ClusterId = "dev";
+                    options.ClusterId = "OrleansCluster";
                     options.ServiceId = "CartWebApi";
                 })
-                .AddMemoryGrainStorage("Default")
+                .AddMemoryGrainStorageAsDefault()
+                .UseConsulClustering(gatewayOptions =>
+                {
+                    gatewayOptions.Address = new Uri("http://consul:8500/");
+                })
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(cart.grain.CartGrain).Assembly).WithReferences())
                 .ConfigureServices(svc => svc.AddSingleton<ICartService, CartService>())
                 .ConfigureLogging(logging => logging.AddConsole());
