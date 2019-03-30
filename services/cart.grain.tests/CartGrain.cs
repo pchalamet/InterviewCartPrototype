@@ -36,6 +36,7 @@ namespace cart.grain.tests
             _cluster = builder.Build();
             _cluster.Deploy();
             _cluster.WaitForLivenessToStabilizeAsync().Wait();
+            System.Threading.Thread.Sleep(1 * 1000);
         }
 
         public void Dispose()
