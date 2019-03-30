@@ -51,13 +51,17 @@ Api returns a tuple (status, value) - because no exception shall be raised. Tupl
 
 
 ## Client
-The client is a dummy one and just import the Swagger service definition. It randomly applies operation on a random cart (so one can run concurrent client to test behaviour). Client use the error info on error and display it as well.
+The client has been created using the Swagger service definition. It randomly applies operation on a random cart (so one can run concurrent client to test behaviour). Client use the error info on error and display it as well.
 
 # Build
-Some requirements:
+Some requirements in order to build everything:
 * dotnet core 2.2 sdk must be installed
 * docker
-* powershell
+* powershell core
 
 Run `build.ps1` to build, test and create docker images.
 Run `run.ps1` to run locally an Orleans silo, the WebApi and kick clients.
+
+# Alternative build
+Docker images are provided as well, which are used in the GCP build via cloudbuild.yaml.
+Note images are not functionnal as more configuration should be done for exposed endpoints.
