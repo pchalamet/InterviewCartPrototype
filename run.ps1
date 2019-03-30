@@ -1,20 +1,11 @@
 param([string] $artifact)
 
 Write-Host "Starting Silo"
-$silo = Start-Job {
-    param([string] $artifact)
-    start-process dotnet $artifact\silo\silo.dll
-} -ArgumentList $artifact
+start-process dotnet $artifact\silo\silo.dll
 
 Write-Host "Starting WebApi"
-$webapi = Start-Job {
-    param([string] $artifact)
-    start-process dotnet $artifact\webapi\webapi.dll
-} -ArgumentList $artifact
+start-process dotnet $artifact\webapi\webapi.dll
 
 Start-Sleep 5
 Write-Host "Running client"
 dotnet $artifact\client\client.dll
-
-Stop-Job $webapi
-Stop-Job $silo
