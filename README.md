@@ -17,20 +17,12 @@ The prototype is built around 3 layers:
                         Public facing                   Internal services
 ````
 
-## WebApi interface
+## WebApi (aka public facing api)
 This is the public facing endpoint (consumed by the client). The interface helps dealing with addition & removal of items in the cart.
-There is are limitations: 
+
+There are limitations in this implementation: 
 * the cart id *must* be given - which explains why it must be provided in the uri.
 * no security
-
-Note this is a prototype, improvements must include:
-* identify user
-* link cart id to user profile
-Again, this is not provided here as it's a prototype.
-
-The webapi has no state - it just delegates to the service layer. This can help scaling the front end. Implementation is fully async to help processing more requests.
-
-The api applies an operation (add or remove) and returns the final state to the client. This has been designed this way to deal with concurrency (see below: service layer section).
 
 Operation | Verb   | Description
 ----------|--------|-------------
@@ -50,8 +42,29 @@ Code | Meaning
 
 For more information and client integration, you can check the Swagger API (see `client/Cart/Cart.nswag.json`).
 
+### Implementation details
+The webapi has no state - it just delegates to the service layer. This can help scaling the front end. Implementation is fully async to help processing more requests.
 
-## Service layer
+The api applies an operation (add or remove) and returns the final state to the client. This has been designed this way to deal with concurrency (see below: service layer section).
+
+Note as this is a prototype, improvements shall include:
+* identify user & validate access
+* link cart id to user profile
+
+## Grains (aka internal service layer)
+This is the internal service layer and provides overall state management.
+
+A Cart grain is identified using a `long` key. The interface `ICart` provides following methods:
+
+Method | Description
+--------------------
+Add    | Add a CartItems to the current state.
+Remove | Remove a CartItems from the current state.
+Clear  | Clear current state.
+
+Api is *not* exception driven - hence it returns both a status code and a value. See `ICart` for proper interface definition.
+
+### Implementation details
 The service layer is implemented using Orleans to deal with 2 problems:
 - state persistence
 - concurrency
@@ -72,10 +85,11 @@ Some requirements in order to build everything:
 * docker
 * powershell core
 
-Main solution file is `cart-prototype.sln` - this can either be built using `dotnet` or `VS Studio`.
+Main solution file is `cart-prototype.sln` - this can either be built using `dotnet` or `VS Studio` (2017 or Mac).
 
-Run `build.ps1` to build, test and create docker images.
-Run `run.ps1` to run locally an Orleans silo, the WebApi and kick clients.
+Using `powershell`:
+* Run `build.ps1` to build, test and create docker images.
+* Run `run.ps1` to run locally an Orleans silo, the WebApi and kick clients.
 
 # Alternative build
 Docker images are provided as well, which are used in the GCP build via cloudbuild.yaml.
