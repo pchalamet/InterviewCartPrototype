@@ -10,5 +10,5 @@ if ($artifact) {
 
     dotnet publish -o $artifact/silo -c $configuration .\services\silo\silo.csproj
     dotnet publish -o $artifact/webapi -c $configuration .\services\webapi\webapi.csproj
-    dotnet publish -o $artifact/client -c $configuration .\client\cart.client\cart.client.csproj
+    dotnet publish -o $artifact/client -c $configuration .\client\client.csproj
 }

@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{F92A09DF-0FF1-4B14-8A54-E46CB3A0E994}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cart.client", "client\cart.client\cart.client.csproj", "{25EBABC3-C811-45B5-AE04-02A70C4ABCB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "client", "client\client.csproj", "{25EBABC3-C811-45B5-AE04-02A70C4ABCB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapi", "services\webapi\webapi.csproj", "{B4BEC2F8-0237-4F4F-BEDE-65DC6363FC07}"
 EndProject
