@@ -1,14 +1,14 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'docker build: silo'
   args: ['build', '-t', 'gcr.io/cart-236115/silo:$COMMIT_SHA', '-f', 'silo.dockerfile', '.']
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'docker build: webapi'
   args: ['build', '-t', 'gcr.io/cart-236115/webapi:$COMMIT_SHA', '-f', 'webapi.dockerfile', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/cart-236115/webapi:$COMMIT_SHA', '-f', 'client.dockerfile', '.']
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'docker build: client'
+  args: ['build', '-t', 'gcr.io/cart-236115/client:$COMMIT_SHA', '-f', 'client.dockerfile', '.']
+- name: 'docker push: silo'
   args: ['push', 'gcr.io/cart-236115/silo:$COMMIT_SHA']
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'docker push: webapi'
   args: ['push', 'gcr.io/cart-236115/webapi:$COMMIT_SHA']
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'docker push: client'
   args: ['push', 'gcr.io/cart-236115/client:$COMMIT_SHA']
 images: ['gcr.io/cart-236115/silo', 'gcr.io/cart-236115/webapi', 'gcr.io/cart-236115/client']
