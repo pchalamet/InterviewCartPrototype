@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
+using Orleans.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,15 @@ namespace webapi
         {
             // connect to orleans cluster
             var client = new ClientBuilder()
-                            .UseLocalhostClustering()
+                            .UseConsulClustering(gatewayOptions =>
+                                                        {
+                                                            gatewayOptions.Address = new Uri("http://consul:8500/");
+                                                        })
                             .Configure<ClusterOptions>(options =>
-                            {
-                                options.ClusterId = "dev";
-                                options.ServiceId = "CartService";
-                            })
+                                                        {
+                                                            options.ClusterId = "OrleansCluster";
+                                                            options.ServiceId = "CartService";
+                                                        })
                             .ConfigureLogging(logging => logging.AddConsole())
                             .Build();
             client.Connect().Wait();
