@@ -15,18 +15,26 @@ namespace cart.grain
             _cartService = cartService;
         }
 
-        public async Task<CartItems> Add(CartItems items)
+        public async Task<(CartItemsStatusCode, CartItems)> Add(CartItems items)
         {
+            var validation = items.Validate();
+            if (validation != CartItemsStatusCode.Ok)
+                return (validation, null);
+
             base.State = _cartService.Add(base.State, items);
             await base.WriteStateAsync();
-            return base.State;
+            return (CartItemsStatusCode.Ok, base.State);
         }
 
-        public async Task<CartItems> Remove(CartItems items)
+        public async Task<(CartItemsStatusCode, CartItems)> Remove(CartItems items)
         {
+            var validation = items.Validate();
+            if (validation != CartItemsStatusCode.Ok)
+                return (validation, null);
+
             base.State = _cartService.Remove(base.State, items);
             await base.WriteStateAsync();
-            return base.State;
+            return (CartItemsStatusCode.Ok, base.State);
         }
 
         public async Task Clear()

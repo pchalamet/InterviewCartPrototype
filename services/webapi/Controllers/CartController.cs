@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using cart.grain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Orleans;
 
 namespace webapi.Controllers
 {
@@ -55,6 +53,28 @@ namespace webapi.Controllers
             _grainFactory = grainFactory;
         }
 
+
+        private IActionResult BuildResponse(CartItemsStatusCode status, cart.grain.CartItems newCartItems)
+        {
+            if (status == CartItemsStatusCode.Ok)
+            {
+                var newCart = new CartItems() { Items = newCartItems.Items };
+                return Ok(newCart);
+            }
+
+            var map = new Dictionary<CartItemsStatusCode, CartError>
+            {
+                { CartItemsStatusCode.InvalidArguments, new CartError { ErrorCode = CartErrorCode.BadRequest, Reason = "Invalid request" } },
+                { CartItemsStatusCode.InvalidId, new CartError { ErrorCode = CartErrorCode.InvalidItemId, Reason = "Invalid id" } },
+                { CartItemsStatusCode.InvalidQuantity, new CartError { ErrorCode = CartErrorCode.InvalidQuantity, Reason = "Invalid quantity" } },
+            };
+
+            if (map.TryGetValue(status, out var res))
+                return BadRequest(res);
+
+            throw new ArgumentException($"Unknown error code {status}");
+        }
+
         /// <summary>
         /// Add the specified items into the cart.
         /// </summary>
@@ -66,20 +86,10 @@ namespace webapi.Controllers
         [ProducesResponseType(typeof(CartError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add(long id, [FromBody] CartItems items)
         {
-            try
-            {
-                var grain = _grainFactory.GetGrain<ICart>(id);
-
-                var cartItems = new cart.grain.CartItems { Items = items.Items };
-                var newSvcCart = await grain.Add(cartItems);
-
-                var newCart = new CartItems() { Items = newSvcCart.Items };
-                return Ok(newCart);
-            }
-            catch (Exception ex)
-            {
-                return base.StatusCode(HttpStatusCode.InternalServerError);
-            }
+            var cartItems = new cart.grain.CartItems { Items = items.Items };
+            var grain = _grainFactory.GetGrain<ICart>(id);
+            var (status, newCartItems) = await grain.Add(cartItems);
+            return BuildResponse(status, newCartItems);
         }
 
         /// <summary>
@@ -91,22 +101,13 @@ namespace webapi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CartItems), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
         public async Task<IActionResult> Remove(long id, [FromBody] CartItems items)
         {
-            try
-            {
-                var grain = _grainFactory.GetGrain<ICart>(id);
-
-                var cartItems = new cart.grain.CartItems { Items = items.Items };
-                var newSvcCart = await grain.Remove(cartItems);
-
-                var newCart = new CartItems() { Items = newSvcCart.Items };
-                return Ok(newCart);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var cartItems = new cart.grain.CartItems { Items = items.Items };
+            var grain = _grainFactory.GetGrain<ICart>(id);
+            var (status, newCartItems) = await grain.Remove(cartItems);
+            return BuildResponse(status, newCartItems);
         }
 
         /// <summary>
@@ -119,16 +120,9 @@ namespace webapi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Clear(long id)
         {
-            try
-            {
-                var grain = _grainFactory.GetGrain<ICart>(id);
-                await grain.Clear();
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var grain = _grainFactory.GetGrain<ICart>(id);
+            await grain.Clear();
+            return Ok();
         }
     }
 }

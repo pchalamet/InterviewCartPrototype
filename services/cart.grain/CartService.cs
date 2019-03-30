@@ -23,8 +23,10 @@ namespace cart.grain
         // - max quantity is int.MaxValue
         private CartItems Update(CartItems items, CartItems opItems, Func<long, long, long> op)
         {
-            items.Validate();
-            opItems.Validate();
+#if DEBUG
+            if (items.Validate() != CartItemsStatusCode.Ok) throw new ArgumentException();
+            if (opItems.Validate() != CartItemsStatusCode.Ok) throw new ArgumentException();
+#endif
 
             var newItems = new CartItems { Items = new Dictionary<string, int>(items.Items) };
             foreach (var item in opItems.Items)

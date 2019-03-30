@@ -12,14 +12,14 @@ namespace cart.grain.tests
         public void Null_as_CartItems_is_invalid()
         {
             CartItems cartItems = null;
-            Assert.Catch<ArgumentNullException>(cartItems.Validate);
+            Assert.AreEqual(CartItemsStatusCode.InvalidArguments, cartItems.Validate());
         }
 
         [Test]
         public void Null_as_Cartitems_collection_is_invalid()
         {
             var cartItems = new CartItems { Items = null };
-            Assert.Catch<ArgumentNullException>(cartItems.Validate);
+            Assert.AreEqual(CartItemsStatusCode.InvalidArguments, cartItems.Validate());
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace cart.grain.tests
         {
             var items = new Dictionary<string, int> { { "A10", 5 }, { "A4", 0 }, { "A3", 4 } };
             var cartItems = new CartItems { Items = items };
-            Assert.Catch<ArgumentException>(cartItems.Validate);
+            Assert.AreEqual(CartItemsStatusCode.InvalidQuantity, cartItems.Validate());
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace cart.grain.tests
         {
             var items = new Dictionary<string, int> { { "A10", 5 }, { "A4", -1 }, { "A3", 4 } };
             var cartItems = new CartItems { Items = items };
-            Assert.Catch<ArgumentException>(cartItems.Validate);
+            Assert.AreEqual(CartItemsStatusCode.InvalidQuantity, cartItems.Validate());
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace cart.grain.tests
         {
             var items = new Dictionary<string, int> { { "A10", 5 }, { "A4", 3 }, { "A3", 4 } };
             var cartItems = new CartItems { Items = items };
-            cartItems.Validate();
+            Assert.AreEqual(CartItemsStatusCode.Ok, cartItems.Validate());
         }
     }
 }

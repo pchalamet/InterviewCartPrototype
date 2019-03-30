@@ -57,13 +57,15 @@ namespace cart.grain.tests
 
             // expected cart:
             // - article1: 10
-            var content1 = await grain.Add(add1);
+            var (status1, content1) = await grain.Add(add1);
+            Assert.AreEqual(CartItemsStatusCode.Ok, status1);
             Assert.AreEqual(10, content1.Items["A1"]);
             Assert.AreEqual(1, content1.Items.Count);
 
             // expected cart:
             // - article1: 8
-            var content2 = await grain.Remove(remove2);
+            var (status2, content2) = await grain.Remove(remove2);
+            Assert.AreEqual(CartItemsStatusCode.Ok, status2);
             Assert.AreEqual(8, content2.Items["A1"]);
             Assert.AreEqual(1, content2.Items.Count);
 
@@ -74,7 +76,8 @@ namespace cart.grain.tests
             // expected cart:
             // - article1: 5
             // - article2: 3
-            var content3 = await grain.Add(add3);
+            var (status3, content3) = await grain.Add(add3);
+            Assert.AreEqual(CartItemsStatusCode.Ok, status3);
             Assert.AreEqual(5, content3.Items["A1"]);
             Assert.AreEqual(3, content3.Items["A2"]);
             Assert.AreEqual(2, content3.Items.Count);

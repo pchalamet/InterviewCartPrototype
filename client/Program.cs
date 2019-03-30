@@ -1,10 +1,11 @@
-﻿using System;
+﻿using client.Cart;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cart.client
+namespace client
 {
 
     public static class CartItemsExtensions
@@ -54,9 +55,13 @@ namespace cart.client
                             throw new ApplicationException("Unexpected action");
                     }
                 }
+                catch(SwaggerException<CartError> ex)
+                {
+                    Console.WriteLine($"Error on #{taskId}: {ex.Result.Reason}");
+                }
                 catch(Exception ex)
                 {
-                    Console.WriteLine($"{taskId} ==> {ex.Message}");
+                    Console.WriteLine($"Unknown error on #{taskId}: {ex.Message}");
                 }
             }
         }

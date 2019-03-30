@@ -48,7 +48,7 @@
           "400": {
             "description": "Bad Request",
             "schema": {
-              "$ref": "#/definitions/ProblemDetails"
+              "$ref": "#/definitions/CartError"
             }
           }
         }
@@ -99,6 +99,9 @@
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "503": {
+            "description": "Server Error"
           }
         }
       }
@@ -147,6 +150,24 @@
             "type": "integer",
             "format": "int32"
           }
+        }
+      }
+    },
+    "CartError": {
+      "type": "object",
+      "properties": {
+        "errorCode": {
+          "type": "integer",
+          "format": "int32",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "reason": {
+          "type": "string"
         }
       }
     },

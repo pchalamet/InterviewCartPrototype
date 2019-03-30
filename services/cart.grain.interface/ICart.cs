@@ -13,10 +13,18 @@ namespace cart.grain
         public static CartItems Empty = new CartItems();
     }
 
+    public enum CartItemsStatusCode
+    {
+        Ok,
+        InvalidId,
+        InvalidQuantity,
+        InvalidArguments,
+    }
+
     public interface ICart : IGrainWithIntegerKey
     {
-        Task<CartItems> Add(CartItems items);
-        Task<CartItems> Remove(CartItems items);
+        Task<(CartItemsStatusCode, CartItems)> Add(CartItems items);
+        Task<(CartItemsStatusCode, CartItems)> Remove(CartItems items);
         Task Clear();
     }
 }

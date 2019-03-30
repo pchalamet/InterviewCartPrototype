@@ -4,7 +4,7 @@
 // </auto-generated>
 //----------------------
 
-namespace cart.client.Cart
+namespace client.Cart
 {
     #pragma warning disable
 
@@ -106,16 +106,16 @@ namespace cart.client.Cart
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(ProblemDetails); 
+                            var result_ = default(CartError); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<CartError>(responseData_, _settings.Value);
                             } 
                             catch (System.Exception exception_) 
                             {
                                 throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
                             }
-                            throw new SwaggerException<ProblemDetails>("Bad Request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                            throw new SwaggerException<CartError>("Bad Request", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -214,6 +214,12 @@ namespace cart.client.Cart
                                 throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
                             }
                             throw new SwaggerException<ProblemDetails>("Bad Request", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ == "503") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Server Error", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -375,6 +381,27 @@ namespace cart.client.Cart
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v9.0.0.1)")]
+    public partial class CartError 
+    {
+        [Newtonsoft.Json.JsonProperty("errorCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CartErrorErrorCode? ErrorCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Reason { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CartError FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CartError>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v9.0.0.1)")]
     public partial class ProblemDetails 
     {
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -410,6 +437,19 @@ namespace cart.client.Cart
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v9.0.0.1)")]
+    public enum CartErrorErrorCode
+    {
+        _1 = 1,
+    
+        _2 = 2,
+    
+        _3 = 3,
+    
+        _4 = 4,
     
     }
 

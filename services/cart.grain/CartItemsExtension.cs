@@ -10,12 +10,13 @@ namespace cart.grain
         // - no null item in the list
         // - no invalid Id (must be > 0)
         // - no invalid Quantity (must be > 0)
-        public static void Validate(this CartItems items)
+        public static CartItemsStatusCode Validate(this CartItems items)
         {
-            if (null == items) throw new ArgumentNullException(nameof(items));
-            if (null == items.Items) throw new ArgumentNullException(nameof(CartItems.Items));
-            if (items.Items.Any(x => x.Key == null)) throw new ArgumentException("Invalid id");
-            if (items.Items.Any(x => x.Value <= 0)) throw new ArgumentException("Invalid quantity");
+            if (null == items) return CartItemsStatusCode.InvalidArguments;
+            if (null == items.Items) return CartItemsStatusCode.InvalidArguments;
+            if (items.Items.Any(x => x.Key == null)) return CartItemsStatusCode.InvalidId;
+            if (items.Items.Any(x => x.Value <= 0)) return CartItemsStatusCode.InvalidQuantity;
+            return CartItemsStatusCode.Ok;
         }
     }
 }
