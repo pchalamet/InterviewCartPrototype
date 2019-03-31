@@ -9,6 +9,9 @@ services:
         build:
             dockerfile: Dockerfile
             context: output/silo/
+        ports:
+            - "11111:11111"
+            - "30000:30000"
         depends_on:
             - consul
   
