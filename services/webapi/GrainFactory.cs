@@ -29,7 +29,7 @@ namespace webapi
                             .Configure<ClusterOptions>(options =>
                             {
                                 options.ClusterId = "OrleansCluster";
-                                options.ServiceId = "CartService";
+                                options.ServiceId = "CartWebApi";
                             })
                             .ConfigureLogging(logging => logging.AddConsole())
                             .Build();

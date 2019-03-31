@@ -1,20 +1,23 @@
 version: '3'
 services:
-  consul:
-    image: consul:latest
+    consul:
+        image: consul:latest
+        ports:
+            - "8500:8500"
 
-  silo:
-    build:
-      dockerfile: Dockerfile
-      context: output/silo/
-    depends_on:
-      - consul
+    silo:
+        build:
+            dockerfile: Dockerfile
+            context: output/silo/
+        depends_on:
+            - consul
   
-  webapi:
-    build:
-      dockerfile: Dockerfile
-      context: output/webapi
-    ports:
-      - "5000:80"
-    depends_on:
-      - silo
+    webapi:
+        build:
+            dockerfile: Dockerfile
+            context: output/webapi
+        ports:
+            - "5000:80"
+        depends_on:
+            - consul
+            - silo
