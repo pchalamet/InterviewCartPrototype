@@ -43,7 +43,7 @@ namespace silo
         {
             // define the cluster configuration
             var builder = new SiloHostBuilder()
-                .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000, hostname: Dns.GetHostName())
+                .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000, listenOnAnyHostAddress: true)
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = "OrleansCluster";

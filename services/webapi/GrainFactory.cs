@@ -23,14 +23,14 @@ namespace webapi
             // connect to orleans cluster
             var client = new ClientBuilder()
                             .UseConsulClustering(gatewayOptions =>
-                                                        {
-                                                            gatewayOptions.Address = new Uri("http://consul:8500/");
-                                                        })
+                            {
+                                gatewayOptions.Address = new Uri("http://consul:8500/");
+                            })
                             .Configure<ClusterOptions>(options =>
-                                                        {
-                                                            options.ClusterId = "OrleansCluster";
-                                                            options.ServiceId = "CartService";
-                                                        })
+                            {
+                                options.ClusterId = "OrleansCluster";
+                                options.ServiceId = "CartService";
+                            })
                             .ConfigureLogging(logging => logging.AddConsole())
                             .Build();
             client.Connect().Wait();
