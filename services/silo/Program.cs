@@ -24,8 +24,14 @@ namespace silo
                 var host = await StartSilo();
 
                 Console.WriteLine("***** Press CRTL-C to exit");
-                await Task.Delay(TimeSpan.FromMilliseconds(-1));
-                Console.WriteLine("***** Process is shutting down");
+                var sem = new SemaphoreSlim(0, 1);
+                void cancelKeyPress(object sender, ConsoleCancelEventArgs e)
+                {
+                    e.Cancel = true;
+                    sem.Release();
+                }
+                Console.CancelKeyPress += cancelKeyPress;
+                await sem.WaitAsync(); Console.WriteLine("***** Process is shutting down");
 
                 await host.StopAsync();
                 return 0;
@@ -35,11 +41,6 @@ namespace silo
                 Console.WriteLine($"***** Process failure: {ex}");
                 return 1;
             }
-        }
-
-        private static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private static async Task<ISiloHost> StartSilo()
